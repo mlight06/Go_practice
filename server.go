@@ -9,10 +9,14 @@ import (
 )
 
 func main() {
+
 	// creates a custom, server multiplexer
 	mux := http.NewServeMux()
-	mux.HandleFunc("/", serveRoot)
+
+	fileServer := http.FileServer(http.Dir("./static"))
+	// mux.HandleFunc("/", serveRoot)
 	mux.HandleFunc("/hello", getHello)
+	mux.Handle("/", fileServer)
 
 	err := http.ListenAndServe(":3333", mux)
 
